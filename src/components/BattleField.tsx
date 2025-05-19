@@ -158,7 +158,7 @@ const BattleField: React.FC = () => {
 
                         const targetContainer = containers[msg.target];
                         const targetSprite = sprites[msg.target];
-                        const targetType = idToType[msg.attacker];
+                        const targetType = idToType[msg.target];
                         const targetSets = animSets[targetType];
 
                         bar.clear();
@@ -206,6 +206,8 @@ const BattleField: React.FC = () => {
 
 
         return () => {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-expect-error
             room.removeAllListeners('event');
             app.ticker.stop();
             app.ticker.destroy();

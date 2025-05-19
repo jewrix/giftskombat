@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react';
+import { createContext, useContext } from 'react';
 import { Client } from 'colyseus.js';
 
 const ClientContext = createContext<Client | null>(null);

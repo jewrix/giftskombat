@@ -24,7 +24,7 @@ export async function preloadAnimationSet(unitType: string): Promise<AnimationSe
     const load = async (action: keyof typeof FRAME_COUNTS) => {
         console.log({unitType})
 
-        await Assets.load(`../assets/${unitType}/` + unitType + action + '.json');
+        await Assets.load(`${import.meta.env.BASE_URL}assets/${unitType}/` + unitType + action + '.json');
         return Array.from({length: FRAME_COUNTS[action]}, (_, i) =>
             PIXI.Texture.from(
                 `hero_${action.toLowerCase()}_${i}.png`

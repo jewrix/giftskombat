@@ -67,8 +67,8 @@ const BoardGrid: React.FC = () => {
         onDragEnd({active, over}) {
             if (!over) return;
 
-            const [fromType, rowA, colA, ...unitChunks] = active.id.split('-');
-            const [toType, rowB, colB] = over.id.split('-');
+            const [fromType, rowA, colA, ...unitChunks] = String(active.id).split('-');
+            const [toType, rowB, colB] = String(over.id).split('-');
 
 
             // если закинули ски из bench на поле

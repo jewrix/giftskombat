@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { useRoom } from '../context/RoomContext';
 import { RootState } from '../store/store';

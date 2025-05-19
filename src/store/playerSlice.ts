@@ -28,9 +28,6 @@ export interface PlayerState extends Schema {
     xpCost: number;
 }
 
-interface MovePayload { unitId: string; from: { row: number; col: number }; to?: { row: number; col: number } }
-interface ReturnPayload extends MovePayload {}
-
 const initialPlayerState: Omit<PlayerState, keyof Schema> = {
     balance: 0,
     hp: 100,

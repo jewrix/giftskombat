@@ -10,9 +10,7 @@ import SellSlot from './SellSlot';
 import BattleField from './BattleField';
 import {useGameSocket} from "../hooks/useGameSocket.ts";
 import PlayersList from "./PlayersList.tsx";
-import PairsList from "./PairsList.tsx";
 import XpPanel from "./XpPanel.tsx";
-import MusicPlayer from "./MusicPlayer.tsx";
 
 const Game: React.FC<{dragging: boolean}> = ({dragging}) => {
     useGameSocket()
@@ -78,9 +76,6 @@ const Game: React.FC<{dragging: boolean}> = ({dragging}) => {
                     </>
                 </div>
             </div>
-
-            {/* 3. FOOTER / MUSIC */}
-            {/*<MusicPlayer/>*/}
 
         </div>
     );

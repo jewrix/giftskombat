@@ -6,7 +6,11 @@ import {Provider} from "react-redux";
 import {Client} from "colyseus.js";
 import {ClientProvider} from "./context/ClientContext.tsx";
 
-const client = new Client('ws://5.129.200.26:2567');
+// const PROD_URL = 'ws://5.129.200.26:2567';
+
+const DEV_URL = 'ws://localhost:2567';
+
+const client = new Client(DEV_URL);
 
 createRoot(document.getElementById('root')!).render(
     <ClientProvider value={client}>
