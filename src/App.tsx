@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {DndContext, DragOverlay} from '@dnd-kit/core';
+import {DndContext, DragOverlay, PointerSensor, TouchSensor, useSensor, useSensors} from '@dnd-kit/core';
 import Lobby from './components/Lobby';
 import {RoomProvider} from './context/RoomContext';
 import Game from './components/Game';
@@ -27,9 +27,6 @@ const App: React.FC = () => {
         }
     }, [battleRoom])
 
-    if (!battleRoom) {
-        return <Lobby onMatchFound={setBattleRoom}/>;
-    }
 
     const handleDragStart = () => {
         setDragging(true)
@@ -39,9 +36,26 @@ const App: React.FC = () => {
         setDragging(false)
     };
 
+    const pointerSensor = useSensor(PointerSensor)
+    const touchSensor = useSensor(TouchSensor, {
+        activationConstraint: {
+            delay: 100,  // мс задержки перед тач-драгом
+            tolerance: 5,    // px «шум» движения, который игнорируем
+        }
+    })
+
+    const sensors = useSensors(
+        pointerSensor,
+        touchSensor
+    );
+
+    if (!battleRoom) {
+        return <Lobby onMatchFound={setBattleRoom}/>;
+    }
+
     return (
         <ThemeProvider theme={theme}>
-            <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+            <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd} sensors={sensors}>
                 <RoomProvider room={battleRoom}>
                     <Game dragging={dragging}/>
                 </RoomProvider>

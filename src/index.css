@@ -18,6 +18,12 @@
   width: 100vw;
 }
 
+* {
+  touch-action: none;    /* отключаем системный скролл-жест */
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -309,13 +315,13 @@ canvas {
   gap: 12px;
   padding: 4px;
   border-radius: 4px;
-  transition: all 0.2s ease;
+  /*transition: all 0.2s ease;*/
 }
 
 .bench-slot {
   width: 45px;
   height: 45px;
-  border: 2px solid var(--tg-border);
+  /*border: 2px solid var(--tg-border);*/
   border-radius: 12px;
   display: flex;
   flex-direction: column;
@@ -326,11 +332,11 @@ canvas {
   text-align: center;
   overflow: hidden;
   position: relative;
-  transition: all 0.2s ease;
+  /*transition: all 0.2s ease;*/
 }
 
 .bench-slot:hover {
-  transform: translateY(-3px);
+  /*transform: translateY(-3px);*/
   box-shadow: 0 4px 12px var(--tg-shadow);
 }
 

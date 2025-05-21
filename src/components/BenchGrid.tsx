@@ -3,14 +3,14 @@ import {useSelector} from 'react-redux';
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
 import {RootState} from '../store/store';
-import {useDroppable} from "@dnd-kit/core";
+import {useDraggable, useDroppable} from "@dnd-kit/core";
 import {UnitType} from "../store/playerSlice.ts";
 
 const BenchItem: React.FC<{ unit: UnitType }> = ({unit}) => {
-    const {attributes, listeners, setNodeRef, transform, transition} = useSortable({id: `bench-${unit.id}`});
+    const {attributes, listeners, setNodeRef, transform} = useDraggable({id: `bench-${unit.id}`});
     const style = {
-        transform: CSS.Transform.toString(transform),
-        transition,
+        transform: CSS.Transform.toString({...transform, scaleX: 1, scaleY: 1}, ),
+        touchAction: 'none',
         cursor: 'grab',
     };
 
@@ -18,7 +18,8 @@ const BenchItem: React.FC<{ unit: UnitType }> = ({unit}) => {
 
     return (
         <div ref={setNodeRef} style={style} {...attributes} {...listeners} className="bench-slot">
-            <img src={src}/>
+            <img src={src} style={{
+            }}/>
         </div>
     );
 };

@@ -4,6 +4,7 @@ import {useDndMonitor, useDraggable, useDroppable} from '@dnd-kit/core';
 import {RootState} from '../store/store';
 import {UnitType} from "../store/playerSlice.ts";
 import {useRoom} from "../context/RoomContext.tsx";
+import {CSS} from '@dnd-kit/utilities';
 
 interface CellProps {
     row: number;
@@ -36,7 +37,7 @@ const Cell: React.FC<CellProps> = ({row, col, unit}) => {
     // Draggable для юнита, если он есть
     const draggableId = unit ? `cell-${row}-${col}-${unit.id}` : '';
     const isDraggable = Boolean(unit);
-    const {attributes, listeners, setNodeRef: setDragRef} = useDraggable({id: draggableId});
+    const {attributes, listeners, setNodeRef: setDragRef, transform} = useDraggable({id: draggableId});
 
     const src = new URL(`../assets/${unit?.unitType}_Idle.gif`, import.meta.url).href;
 
@@ -49,9 +50,13 @@ const Cell: React.FC<CellProps> = ({row, col, unit}) => {
             id={isDraggable ? draggableId : dropId}
             className="board-cell"
             {...(isDraggable ? {...attributes, ...listeners} : {})}
-            style={style(isOver, isDraggable)}
+            style={{
+                ...style(isOver, isDraggable),
+                // transition,
+            }}
         >
             {unit && <img src={src} style={{
+                transform: CSS.Translate.toString(transform),
                 width: "100%",
                 height: '100%'
             }}/>}
@@ -136,7 +141,7 @@ const BoardGrid: React.FC = () => {
 
             <div className="board-grid">
                 {Array.from({length: 4}).flatMap((_, col) =>
-                    Array.from({length: 4}).map((_,  row) => {
+                    Array.from({length: 4}).map((_, row) => {
                         return <EnemyCell key={`enemy-cell-${row}-${col}`}/>;
                     })
                 )}
