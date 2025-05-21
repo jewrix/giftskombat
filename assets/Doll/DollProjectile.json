@@ -1,0 +1,42 @@
+{
+  "frames": {
+    "hero_projectile_0.png": {
+      "frame": {"x": 0, "y": 0, "w": 64, "h": 64},
+      "sourceSize": {"w": 512, "h": 64}
+    },
+    "hero_projectile_1.png": {
+      "frame": {"x": 64, "y": 0, "w": 64, "h": 64},
+      "sourceSize": {"w": 512, "h": 64}
+    },
+    "hero_projectile_2.png": {
+      "frame": {"x": 128, "y": 0, "w": 64, "h": 64},
+      "sourceSize": {"w": 512, "h": 64}
+    },
+    "hero_projectile_3.png": {
+      "frame": {"x": 192, "y": 0, "w": 64, "h": 64},
+      "sourceSize": {"w": 512, "h": 64}
+    },
+    "hero_projectile_4.png": {
+      "frame": {"x": 256, "y": 0, "w": 64, "h": 64},
+      "sourceSize": {"w": 512, "h": 64}
+    },
+    "hero_projectile_5.png": {
+      "frame": {"x": 320, "y": 0, "w": 64, "h": 64},
+      "sourceSize": {"w": 512, "h": 64}
+    },
+    "hero_projectile_6.png": {
+      "frame": {"x": 384, "y": 0, "w": 64, "h": 64},
+      "sourceSize": {"w": 512, "h": 64}
+    },
+    "hero_projectile_7.png": {
+      "frame": {"x": 448, "y": 0, "w": 64, "h": 64},
+      "sourceSize": {"w": 512, "h": 64}
+    }
+  },
+  "meta": {
+    "image": "DollProjectile.png",
+    "format": "RGBA8888",
+    "size": {"w": 512, "h": 64},
+    "scale": 1
+  }
+}
