@@ -92,8 +92,8 @@ button:focus-visible {
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(4, 1fr);
   gap: 8px;
-  width: calc(4 * 49px + 3 * 8px);
-  height: calc(4 * 49px + 3 * 8px);
+  width: calc(4 * 5vw + 3 * 8px);
+  height: calc(4 * 10vh + 3 * 8px);
 }
 
 .board-cell {

@@ -9,6 +9,7 @@ export const FRAME_COUNTS = {
     Attack: 9,
     Hurt: 3,
     Death: 6,
+    Projectile: 6,
 } as const;
 
 /**
@@ -22,19 +23,25 @@ export async function preloadAnimationSet(unitType: string): Promise<AnimationSe
 
     // Функция для загрузки массива текстур
     const load = async (action: keyof typeof FRAME_COUNTS) => {
-        console.log({unitType})
 
-        await Assets.load(`${import.meta.env.BASE_URL}assets/${unitType}/` + unitType + action + '.json');
-        return Array.from({length: FRAME_COUNTS[action]}, (_, i) =>
-            PIXI.Texture.from(
-                `hero_${action.toLowerCase()}_${i}.png`
-            )
-        );
+        console.log({action})
+        try {
+            await Assets.load(`${import.meta.env.BASE_URL}assets/${unitType}/` + unitType + action + '.json');
+            return Array.from({length: FRAME_COUNTS[action]}, (_, i) =>
+                PIXI.Texture.from(
+                    `hero_${action.toLowerCase()}_${i}.png`
+                )
+            );
+        }
+        catch (e) {
+            console.error(e);
+        }
     }
 
     const walk = await load('Walk');
     const attack = await load('Attack');
     const idle = await load('Idle');
+    const projectile = await load('Projectile');
     // const hurt = await load('Hurt');
     // const death = await load('Death');
 
@@ -43,6 +50,7 @@ export async function preloadAnimationSet(unitType: string): Promise<AnimationSe
         idle,
         walk,
         attack,
+        projectile,
         hurt: [],
         death: [],
     };

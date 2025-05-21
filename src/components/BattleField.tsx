@@ -3,14 +3,16 @@ import {useRoom} from '../context/RoomContext';
 import {useDispatch, useSelector} from 'react-redux';
 import {battleFinished} from '../store/gameSlice';
 import {RootState} from "../store/store.ts";
-import {AnimatedSprite, AnimatedSpriteFrames, Application, Graphics, Container} from "pixi.js";
+import {AnimatedSprite, AnimatedSpriteFrames, Application, Graphics, Container, ICanvas, Sprite, Texture} from "pixi.js";
 import {UnitType} from "../store/playerSlice.ts";
 import {animationCache} from "../utils/animationCache.ts";
 
 import gsap from "gsap";
 
+const BASE_WIDTH  = 448;
+const BASE_HEIGHT = 242;
 const CELL_SIZE = 35;
-const GAP = 16;
+const GAP       = 16;
 
 const BattleField: React.FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -22,8 +24,8 @@ const BattleField: React.FC = () => {
     useEffect(() => {
         const app = new Application();
         app.init({
-            width: 448,
-            height: 242,
+            width: BASE_WIDTH,
+            height: BASE_HEIGHT,
             backgroundAlpha: 0,
         }).then(async () => {
 
@@ -45,6 +47,7 @@ const BattleField: React.FC = () => {
                     attack: animationCache[type]!.attack,
                     idle: animationCache[type]!.walk,
                     move: animationCache[type]!.walk,
+                    projectile: animationCache[type]!.projectile,
                 };
             });
 
@@ -61,7 +64,7 @@ const BattleField: React.FC = () => {
 
                 const container = new Container();
                 container.x = (u.positionX ?? 0) * (CELL_SIZE + GAP);
-                container.y = (u.positionY ?? 0) * (CELL_SIZE + GAP);
+                container.y = (u.positionY ?? 0) * (CELL_SIZE + GAP) + 8;
 
                 const frames = animSets[u.unitType].idle as unknown as AnimatedSpriteFrames;
                 const anim = new AnimatedSprite(frames);
@@ -72,10 +75,7 @@ const BattleField: React.FC = () => {
                 anim.width = CELL_SIZE;
                 anim.height = CELL_SIZE;
 
-                if (isEnemy) {
-                    anim.anchor.set(1, 0);
-                    anim.scale.x = -1;
-                }
+                anim.anchor.set(0.5, 0.5);
 
                 maxHp[u.id] = u.hp;
                 currentHp[u.id] = u.hp;
@@ -91,8 +91,10 @@ const BattleField: React.FC = () => {
                     .drawRect(0, 0, CELL_SIZE, 6)
                     .endFill();
 
-                barBg.y = -8;
-                barFg.y = -8;
+                barBg.x = -CELL_SIZE / 2;
+                barBg.y = -CELL_SIZE / 2 - 8;
+                barFg.x = -CELL_SIZE / 2;
+                barFg.y = -CELL_SIZE / 2 - 8;
                 healthBars[u.id] = barFg;
 
                 container.addChild(anim);
@@ -116,7 +118,6 @@ const BattleField: React.FC = () => {
 
                 switch (msg.type) {
                     case 'move': {
-
                         const type = idToType[msg.id];
                         const sets = animSets[type];
                         const spr = sprites[msg.id];
@@ -124,7 +125,12 @@ const BattleField: React.FC = () => {
                         if (!spr) return;
 
                         const targetX = msg.x * (CELL_SIZE + GAP);
-                        const targetY = msg.y * (CELL_SIZE + GAP);
+                        const targetY = msg.y * (CELL_SIZE + GAP) + 8;
+
+                        spr.anchor.set(0.5, 0.5);
+                        if ((container.x < targetX) !== (spr.scale.x > 0)) {
+                            spr.scale.x = -spr.scale.x;
+                        }
 
                         gsap.to(container, {
                             x: targetX,
@@ -134,22 +140,24 @@ const BattleField: React.FC = () => {
                         });
 
                         if (spr.textures !== animSets[idToType[msg.id]].move) {
-                            spr.stop();
+                            // spr.stop();
                             spr.textures = sets.move as unknown as AnimatedSpriteFrames;
                             spr.loop = true;
-                            spr.play();
+                            // spr.play();
+                            spr.gotoAndPlay(0);
                         }
 
-                        spr.play();
+                        // spr.play();
                         break;
                     }
                     case 'attack': {
                         const attackerType = idToType[msg.attacker];
                         const attackerSprite = sprites[msg.attacker];
                         const attackerSets = animSets[attackerType];
+                        const attackerContainer = containers[msg.attacker];
+
                         attackerSprite.animationSpeed = 0.3;
                         attackerSprite.textures = attackerSets.attack as unknown as AnimatedSpriteFrames;
-                        attackerSprite.play();
 
                         currentHp[msg.target] = Math.max(0, currentHp[msg.target] - msg.damage);
 
@@ -161,12 +169,54 @@ const BattleField: React.FC = () => {
                         const targetType = idToType[msg.target];
                         const targetSets = animSets[targetType];
 
+                        attackerSprite.anchor.set(0.5, 0.5);
+                        if ((attackerContainer.x < targetContainer.x) !== (attackerSprite.scale.x > 0)) {
+                            attackerSprite.scale.x = -attackerSprite.scale.x;
+                        }
+
                         bar.clear();
                         if(ratio !== 0) {
                             bar.drawRect(0, 0, CELL_SIZE * ratio, 6).endFill();
                         } else {
                             targetContainer.alpha = 0.4;
                             targetSprite.textures = targetSets.idle as unknown as AnimatedSpriteFrames;
+                        }
+
+                        attackerSprite.gotoAndPlay(0);
+
+                        // 2) Спавним снаряд
+                        if(animationCache[attackerType]?.projectile){
+                            const proj = new AnimatedSprite(animationCache[attackerType]!.projectile);
+
+                            proj.loop           = false;
+                            // proj.animationSpeed = 0.4;
+                            proj.play();                          // ← вот этот метод у вас пропущен
+
+                            proj.width  = CELL_SIZE * 0.6;
+                            proj.height = CELL_SIZE * 0.6;
+                            proj.zIndex = 1000;
+
+                            // центрируем снаряд
+                            proj.anchor.set(0.5);
+                            // стартовая позиция — центр атака-спрайта
+                            const from = containers[msg.attacker];
+                            proj.x = from.x + CELL_SIZE/2;
+                            proj.y = from.y + CELL_SIZE/2;
+                            app.stage.addChild(proj);
+
+
+                            // 3) Твин полёта
+                            const to = containers[msg.target];
+                            gsap.to(proj, {
+                                x:          to.x + CELL_SIZE/2,
+                                y:          to.y + CELL_SIZE/2,
+                                duration:   0.5,
+                                ease:       "power1.inOut",
+                                onComplete: () => {
+                                    app.stage.removeChild(proj);
+                                    proj.destroy();
+                                }
+                            });
                         }
                         break;
                     }

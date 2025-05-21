@@ -32,7 +32,9 @@ const BenchGrid: React.FC = () => {
 
     return (
         <div style={{position: 'relative'}}>
-            <img src='/assets/lavka.png' style={{inset: 0, position: "absolute", width: '100%', height: '100%'}} alt=""/>
+            <img
+                 src={`${import.meta.env.BASE_URL}assets/lavka.png`}
+                 style={{inset: 0, position: "absolute", width: '100%', height: '100%'}} alt=""/>
             <div
                 className="bench-grid"
                 ref={setBenchRef}

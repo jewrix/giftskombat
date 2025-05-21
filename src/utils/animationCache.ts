@@ -7,6 +7,7 @@ export interface AnimationSet {
     attack: Texture[];
     hurt: Texture[];
     death: Texture[];
+    projectile: Texture[];
 }
 
 // Глобальное хранилище кэша анимаций

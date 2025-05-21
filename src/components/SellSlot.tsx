@@ -26,7 +26,7 @@ const SellSlot: React.FC = () => {
 
     return (
         <div ref={setNodeRef} id="sell-slot" style={style}>
-            <img src='/assets/SellButton.png' alt="" style={{width: '100%', height: '100%', objectFit: 'contain'}}/>
+            <img src={`${import.meta.env.BASE_URL}assets/SellButton.png`} alt="" style={{width: '100%', height: '100%', objectFit: 'contain'}}/>
         </div>
     );
 };

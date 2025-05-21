@@ -11,6 +11,7 @@ import {createTheme, ThemeProvider} from "@mui/material";
 import './Game.css';
 
 preloadAll(['PlushPepe', 'ScaredCat', 'Cookie', 'Doll', 'JellyBunny', 'MadPumpkin', 'ToyBear', 'CrystalBall']);
+// preloadAll(["Doll"]);
 
 console.log({animationCache})
 const theme = createTheme();

@@ -12,9 +12,9 @@ interface CellProps {
 }
 
 const style = (isOver?: boolean, isDraggable?: boolean): React.CSSProperties => ({
-    border: isOver ? '2px solid #00f' : '2px dashed #ccc',
-    width: 45,
-    height: 45,
+    border: isOver ? '1px solid #00f' : '1px dashed #ccc',
+    width: '5vw',
+    height: '10vh',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -40,7 +40,6 @@ const Cell: React.FC<CellProps> = ({row, col, unit}) => {
 
     const src = new URL(`../assets/${unit?.unitType}_Idle.gif`, import.meta.url).href;
 
-
     return (
         <div
             ref={el => {
@@ -52,7 +51,10 @@ const Cell: React.FC<CellProps> = ({row, col, unit}) => {
             {...(isDraggable ? {...attributes, ...listeners} : {})}
             style={style(isOver, isDraggable)}
         >
-            {unit && <img src={src} width={50} height={50}/>}
+            {unit && <img src={src} style={{
+                width: "100%",
+                height: '100%'
+            }}/>}
         </div>
     );
 };

@@ -62,7 +62,7 @@ const ShopPanel: React.FC = () => {
                 className="open-button"
                 onClick={() => dispatch(openShop())}
             >
-                <img src='/assets/StoreButton.png' alt=""
+                <img src={`${import.meta.env.BASE_URL}assets/StoreButton.png`}  alt=""
                      style={{width: '100%', height: '100%', objectFit: 'contain'}}/>
             </button>
         </>
