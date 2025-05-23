@@ -8,7 +8,7 @@ import {ClientProvider} from "./context/ClientContext.tsx";
 
 // const PROD_URL = 'ws://5.129.200.26:2567';
 
-const DEV_URL = 'ws://localhost:2567';
+const DEV_URL = 'ws://giftscombat.ru/';
 
 const client = new Client(DEV_URL);
 
