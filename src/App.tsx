@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {DndContext, DragOverlay, PointerSensor, TouchSensor, useSensor, useSensors} from '@dnd-kit/core';
+import {DndContext, PointerSensor, TouchSensor, useSensor, useSensors} from '@dnd-kit/core';
 import Lobby from './components/Lobby';
 import {RoomProvider} from './context/RoomContext';
 import Game from './components/Game';
@@ -18,6 +18,7 @@ const theme = createTheme();
 const App: React.FC = () => {
     const [battleRoom, setBattleRoom] = useState<null | Room>(null);
     const [dragging, setDragging] = useState(false);
+    const [orientation, setOrientation] = useState(screen.orientation.type);
 
     useEffect(() => {
         if (battleRoom) {
@@ -27,6 +28,17 @@ const App: React.FC = () => {
         }
     }, [battleRoom])
 
+    useEffect(() => {
+        screen.orientation.addEventListener('change', () => {
+            setOrientation(screen.orientation.type);
+        });
+
+        return () => {
+            screen.orientation.removeEventListener('change', () => {
+                setOrientation(screen.orientation.type);
+            });
+        };
+    }, []);
 
     const handleDragStart = () => {
         setDragging(true)
@@ -48,6 +60,22 @@ const App: React.FC = () => {
         pointerSensor,
         touchSensor
     );
+
+    if (orientation.startsWith('portrait')) {
+        return (
+            <div style={{
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+            }}>
+                <div style={{width: 400, height: 600}}>
+                    <h1>Пожалуйста, поверните устройство</h1>
+                </div>
+            </div>
+        )
+    }
 
     if (!battleRoom) {
         return <Lobby onMatchFound={setBattleRoom}/>;

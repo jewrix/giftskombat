@@ -6,11 +6,15 @@ import {Provider} from "react-redux";
 import {Client} from "colyseus.js";
 import {ClientProvider} from "./context/ClientContext.tsx";
 
+import { init } from '@telegram-apps/sdk-react'
+
 // const PROD_URL = 'ws://5.129.200.26:2567';
+const DEV_URL = 'wss://giftscombat.ru/';
 
-const DEV_URL = 'ws://giftscombat.ru/';
+const client = new Client(DEV_URL, {
+});
 
-const client = new Client(DEV_URL);
+init()
 
 createRoot(document.getElementById('root')!).render(
     <ClientProvider value={client}>

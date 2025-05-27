@@ -3,6 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <script async src="https://telegram.org/js/telegram-web-app.js">
+    </script>
+    <script defer>
+      document.addEventListener('DOMContentLoaded', () => {
+        // Убедимся, что Telegram.WebApp подгрузился
+        if (window.Telegram && Telegram.WebApp) {
+          // Сообщаем Telegram, что контент готов
+          Telegram.WebApp.ready();
+
+          // Только если поддерживается API ≥ 8.0
+          if (Telegram.WebApp.isVersionAtLeast('8.0')) {
+            console.log('isFullscreen')
+            Telegram.WebApp.requestFullscreen();
+          }
+        }
+      });
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite + React + TS</title>
   </head>

@@ -25,6 +25,8 @@
     "@pixi/sprite": "^7.4.3",
     "@pixi/ticker": "^7.4.3",
     "@reduxjs/toolkit": "^2.7.0",
+    "@telegram-apps/bridge": "^2.8.2",
+    "@telegram-apps/sdk-react": "^3.3.0",
     "colyseus.js": "^0.16.16",
     "framer-motion": "^12.9.4",
     "gsap": "^3.13.0",
