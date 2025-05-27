@@ -14,6 +14,7 @@
 
           // Только если поддерживается API ≥ 8.0
           if (Telegram.WebApp.isVersionAtLeast('8.0')) {
+            console.log('isFullscreen')
             Telegram.WebApp.requestFullscreen();
           }
         }
