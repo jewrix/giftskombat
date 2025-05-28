@@ -11,8 +11,10 @@ import BattleField from './BattleField';
 import {useGameSocket} from "../hooks/useGameSocket.ts";
 import PlayersList from "./PlayersList.tsx";
 import XpPanel from "./XpPanel.tsx";
+import ItemSidebar from "./ItemsSidebar.tsx";
+import ItemShopPanel from "./ItemShopPanel.tsx";
 
-const Game: React.FC<{dragging: boolean}> = ({dragging}) => {
+const Game: React.FC<{ dragging: boolean }> = ({dragging}) => {
     useGameSocket()
 
     const combatStarted = useSelector((s: RootState) => s.game.combatStarted);
@@ -48,10 +50,11 @@ const Game: React.FC<{dragging: boolean}> = ({dragging}) => {
                         <div className="top-panel">
                         </div>
 
-                        {/* Shop + Sell */}
                         <div className="shop-sell-panel">
-
+                            <ItemShopPanel/>
                         </div>
+
+                        <ItemSidebar/>
 
                         {/* Board Grid */}
                         {

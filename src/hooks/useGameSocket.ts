@@ -13,6 +13,7 @@ import {
 import {PlayerState} from "../store/playerSlice.ts";
 import {closeShop, openShop, setOffers} from "../store/shopSlice.ts";
 import {useRoom} from "../context/RoomContext.tsx";
+import {openItemShop, setItemOffers} from "../store/itemShopSlice.ts";
 
 export function useGameSocket() {
     const dispatch = useDispatch();
@@ -36,6 +37,7 @@ export function useGameSocket() {
             if (me) {
                 dispatch(setFullState(me));
                 dispatch(setOffers(Array.from(me.shopOffers.values())));
+                dispatch(setItemOffers(Array.from(me.itemOffers.values())))
             }
 
             const players = state.players.toJSON();
@@ -54,8 +56,13 @@ export function useGameSocket() {
             dispatch(setOpponents(opponents.map(op => Array.from(Object.values(op.board)))));
         });
 
-        room.onMessage('prepare', () => {
-            dispatch(openShop());
+        room.onMessage('prepare', ({isWasNpcRound}: { isWasNpcRound: boolean }) => {
+            if(isWasNpcRound) {
+                console.log({isWasNpcRound})
+                dispatch(openItemShop());
+            } else {
+                dispatch(openShop());
+            }
         })
 
         room.onMessage('xpCost', (msg: { amount: number, cost: number }) => {

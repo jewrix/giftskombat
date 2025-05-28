@@ -9,7 +9,7 @@ import {init as initSDK, viewport} from '@telegram-apps/sdk-react';
 
 
 const prodUrl = 'wss://giftscombat.ru/'
-const devUrl = 'ws://localhost:2567/'
+// const devUrl = 'ws://localhost:2567/'
 
 async function bootstrap() {
 

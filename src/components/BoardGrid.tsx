@@ -69,6 +69,7 @@ const BoardGrid: React.FC = () => {
     const boardMap = useSelector((s: RootState) => s.player.board);
     const units = Object.values(boardMap);
 
+    // TODO: Вынести из компонента
     // ② Ловим окончание любого DnD и, если drop на ячейку поля, шлём на сервер
     useDndMonitor({
         onDragEnd({active, over}) {
@@ -77,6 +78,7 @@ const BoardGrid: React.FC = () => {
             const [fromType, rowA, colA, ...unitChunks] = String(active.id).split('-');
             const [toType, rowB, colB] = String(over.id).split('-');
 
+            console.log({over: active.id})
 
             // если закинули ски из bench на поле
             if (fromType === 'bench' && toType === 'cell') {
@@ -118,6 +120,16 @@ const BoardGrid: React.FC = () => {
             if (fromType === 'cell' && over.id === 'sell-slot') {
                 const figureId = unitChunks.join('-');
                 room.send('sellFigure', {figureId});
+            }
+
+            if (fromType === 'item' && toType === 'cell') {
+                const selectedUnit = units.find(u => u.positionX === Number(rowB) && u.positionY === Number(colB));
+
+                if(selectedUnit) {
+                    const itemId = [rowA, colA, ...unitChunks].join('-');
+                    console.log({selectedUnit, itemId})
+                    room.send('equip_item', {figureId: selectedUnit.id, itemId });
+                }
             }
 
             if (fromType === 'bench' && over.id === 'sell-slot') {

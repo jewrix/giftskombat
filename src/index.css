@@ -142,7 +142,9 @@ button:focus-visible {
   padding: 8px;
   background: rgba(0,0,0,0.05);
   border-radius: 4px;
+  color: white;
 }
+
 .players-list h3 {
   margin-top: 0;
   font-size: 16px;
@@ -210,9 +212,20 @@ canvas {
   margin: 20px 0;
 }
 
+.item-shop-items {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  width: 100%;
+  margin: 20px 0;
+}
+
 /* Карточки товаров */
 .shop-card {
-  background: #f8f9fa;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #00a7cd;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
   padding: 6px;
@@ -249,15 +262,17 @@ canvas {
 
 .shop-panel {
   z-index: 999;
-  opacity: 1;
+  width: 50vw;
   position: fixed;
   transition: all 0.3s ease;
-  background: #fff;
   border-radius: 16px;
   padding: 10px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   top: 38px;
   left: 28%;
+  background-color: #095389cc;
+  border: 6px solid #001d46;
+  color: white;
 }
 
 .shop-panel.hidden {

@@ -68,9 +68,11 @@ export interface PlayerState extends Schema {
     bench: UnitType[];
     board: UnitType[];
     shopOffers: UnitType[];
+    itemOffers: Item[];
     aiBoards: UnitType[][];
     xpCost: number;
     name: string
+    inventory: Item[],
     avatarUrl: string
 }
 
@@ -84,7 +86,9 @@ const initialPlayerState: Omit<PlayerState, keyof Schema> = {
     bench: [],
     board: [],
     shopOffers: [],
+    itemOffers: [],
     aiBoards: [],
+    inventory: [],
     xpCost: 0,
     name: '',
     avatarUrl: ''
