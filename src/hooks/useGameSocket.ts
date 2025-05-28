@@ -40,6 +40,8 @@ export function useGameSocket() {
 
             const players = state.players.toJSON();
 
+            console.log({players})
+
             // @ts-ignore
             dispatch(setPlayers(players))
 

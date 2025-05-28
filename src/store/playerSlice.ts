@@ -1,18 +1,62 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {Schema} from "@colyseus/schema";
 
-export interface UnitType {
+
+export interface Item {
     id: string;
-    ownerId: string;
-    hp: number;
-    attackPower: number;
-    attackRange: number;
-    positionX: number | null;
-    positionY: number | null;
-    unitType: string;
-    tier: number;
-    cost: number;
+    name: string;
+    attackBonus: number;
+    hpBonus: number;
+    speedBonus: number;
+    rangeBonus: number;
+    costBonus: number;
+    armorBonus: number;
 }
+
+export interface UnitType {
+    /** уникальный ID фигуры */
+    id: string;
+
+    /** чей это юнит */
+    ownerId: string;
+
+    /** внутренняя строка-тип (ScaredCat, и т.п.) */
+    unitType: string;
+
+    /** уровень (1–5) */
+    tier: number;
+
+    /** стоимость (для магазина / продажи) */
+    cost: number;
+
+    /** базовый максимум здоровья (без предметов) */
+    baseHp: number;
+
+    /** текущее здоровье (после урона и исцеления) */
+    currentHp: number;
+
+    /** базовая сила атаки (без предметов) */
+    baseAttackPower: number;
+
+    /** базовая дальность атаки (без предметов) */
+    baseAttackRange: number;
+
+    /** базовая скорость движения (без предметов) */
+    baseSpeed: number;
+
+    /** X–координата на сетке */
+    positionX: number;
+
+    /** Y–координата на сетке */
+    positionY: number;
+
+    /** “размер” фигуры (для обхода/занятости) */
+    size: number;
+
+    /** экипировка — массив предметов, дающих бонусы */
+    items: Item[];
+}
+
 
 export interface PlayerState extends Schema {
     balance: number;
@@ -26,6 +70,8 @@ export interface PlayerState extends Schema {
     shopOffers: UnitType[];
     aiBoards: UnitType[][];
     xpCost: number;
+    name: string
+    avatarUrl: string
 }
 
 const initialPlayerState: Omit<PlayerState, keyof Schema> = {
@@ -40,6 +86,8 @@ const initialPlayerState: Omit<PlayerState, keyof Schema> = {
     shopOffers: [],
     aiBoards: [],
     xpCost: 0,
+    name: '',
+    avatarUrl: ''
 };
 
 const playerSlice = createSlice({

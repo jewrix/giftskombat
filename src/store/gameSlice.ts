@@ -6,6 +6,7 @@ export interface PairResult {
     playerA: string;
     playerB: string;
     winner: string;
+    side?: 'self' | 'enemy';
 }
 
 // Интерфейс по серверной схеме GameState.ts: round и combatStarted (флаг фазы боя)

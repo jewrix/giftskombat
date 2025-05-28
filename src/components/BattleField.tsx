@@ -1,18 +1,25 @@
 import React, {useRef, useEffect} from 'react';
 import {useRoom} from '../context/RoomContext';
 import {useDispatch, useSelector} from 'react-redux';
-import {battleFinished} from '../store/gameSlice';
+import {battleFinished, PairResult} from '../store/gameSlice';
 import {RootState} from "../store/store.ts";
-import {AnimatedSprite, AnimatedSpriteFrames, Application, Graphics, Container, ICanvas, Sprite, Texture} from "pixi.js";
+import {
+    AnimatedSprite,
+    AnimatedSpriteFrames,
+    Application,
+    Graphics,
+    Container,
+} from "pixi.js";
 import {UnitType} from "../store/playerSlice.ts";
 import {animationCache} from "../utils/animationCache.ts";
 
 import gsap from "gsap";
+import {toast} from "react-toastify";
 
-const BASE_WIDTH  = 448;
+const BASE_WIDTH = 448;
 const BASE_HEIGHT = 242;
 const CELL_SIZE = 35;
-const GAP       = 16;
+const GAP = 16;
 
 const BattleField: React.FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -77,8 +84,10 @@ const BattleField: React.FC = () => {
 
                 anim.anchor.set(0.5, 0.5);
 
-                maxHp[u.id] = u.hp;
-                currentHp[u.id] = u.hp;
+
+                console.log({u})
+                maxHp[u.id] = u.baseHp;
+                currentHp[u.id] = u.baseHp;
 
                 // Задний фон бара
                 const barBg = new Graphics()
@@ -103,9 +112,9 @@ const BattleField: React.FC = () => {
 
                 app.stage.addChild(container);
                 containers[u.id] = container;
-                sprites[u.id]    = anim;
+                sprites[u.id] = anim;
                 healthBars[u.id] = barFg;
-                idToType[u.id]   = u.unitType;
+                idToType[u.id] = u.unitType;
             }
 
             // Создаём свои
@@ -159,6 +168,8 @@ const BattleField: React.FC = () => {
                         attackerSprite.animationSpeed = 0.3;
                         attackerSprite.textures = attackerSets.attack as unknown as AnimatedSpriteFrames;
 
+                        console.log({msg}, currentHp[msg.target]);
+
                         currentHp[msg.target] = Math.max(0, currentHp[msg.target] - msg.damage);
 
                         const ratio = currentHp[msg.target] / maxHp[msg.target];
@@ -175,7 +186,7 @@ const BattleField: React.FC = () => {
                         }
 
                         bar.clear();
-                        if(ratio !== 0) {
+                        if (ratio !== 0) {
                             bar.drawRect(0, 0, CELL_SIZE * ratio, 6).endFill();
                         } else {
                             targetContainer.alpha = 0.4;
@@ -185,14 +196,14 @@ const BattleField: React.FC = () => {
                         attackerSprite.gotoAndPlay(0);
 
                         // 2) Спавним снаряд
-                        if(animationCache[attackerType]?.projectile){
+                        if (animationCache[attackerType]?.projectile) {
                             const proj = new AnimatedSprite(animationCache[attackerType]!.projectile);
 
-                            proj.loop           = false;
+                            proj.loop = false;
                             // proj.animationSpeed = 0.4;
                             proj.play();                          // ← вот этот метод у вас пропущен
 
-                            proj.width  = CELL_SIZE * 0.6;
+                            proj.width = CELL_SIZE * 0.6;
                             proj.height = CELL_SIZE * 0.6;
                             proj.zIndex = 1000;
 
@@ -200,18 +211,18 @@ const BattleField: React.FC = () => {
                             proj.anchor.set(0.5);
                             // стартовая позиция — центр атака-спрайта
                             const from = containers[msg.attacker];
-                            proj.x = from.x + CELL_SIZE/2;
-                            proj.y = from.y + CELL_SIZE/2;
+                            proj.x = from.x + CELL_SIZE / 2;
+                            proj.y = from.y + CELL_SIZE / 2;
                             app.stage.addChild(proj);
 
 
                             // 3) Твин полёта
                             const to = containers[msg.target];
                             gsap.to(proj, {
-                                x:          to.x + CELL_SIZE/2,
-                                y:          to.y + CELL_SIZE/2,
-                                duration:   0.5,
-                                ease:       "power1.inOut",
+                                x: to.x + CELL_SIZE / 2,
+                                y: to.y + CELL_SIZE / 2,
+                                duration: 0.5,
+                                ease: "power1.inOut",
                                 onComplete: () => {
                                     app.stage.removeChild(proj);
                                     proj.destroy();
@@ -252,6 +263,20 @@ const BattleField: React.FC = () => {
                         break;
                 }
             });
+
+            room.onMessage('pairResult', (msg: PairResult) => {
+                if (
+                    msg.side === 'self'
+                ) {
+                    toast('Вы победили!', {
+                        type: 'success',
+                    });
+                } else {
+                    toast('Вы проиграли!', {
+                        type: 'error',
+                    });
+                }
+            })
         })
 
 
@@ -268,12 +293,12 @@ const BattleField: React.FC = () => {
     }, [room, dispatch]);
 
     return (
-            <div
-                ref={containerRef}
-                style={{
-                    overflow: 'hidden'
-                }}
-            />
+        <div
+            ref={containerRef}
+            style={{
+                overflow: 'hidden'
+            }}
+        />
     );
 };
 

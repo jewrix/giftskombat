@@ -957,6 +957,20 @@
   resolved "https://registry.yarnpkg.com/@standard-schema/utils/-/utils-0.3.0.tgz#3d5e608f16c2390c10528e98e59aef6bf73cae7b"
   integrity sha512-e7Mew686owMaPJVNNLs55PUvgz371nKgwsc4vxE49zsODpJEnxgxRo2y/OKrqueavXgZNMDVj3DdHFlaSAeU8g==
 
+"@telegram-apps/bridge@2.4.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@telegram-apps/bridge/-/bridge-2.4.0.tgz#206d4ff14b2635ecd671715cb6a665bbce50e674"
+  integrity sha512-Lp/vhspF7okK8zXvSWWirunKXOPE6Gr11o9VBne4VmKG/yHRhEW7Pf07ncPtXLLzI6wW8+VYc3khsHPABJymEw==
+  dependencies:
+    "@telegram-apps/signals" "^1.1.1"
+    "@telegram-apps/toolkit" "^2.0.0"
+    "@telegram-apps/transformers" "^2.2.0"
+    "@telegram-apps/types" "^2.0.0"
+    better-promises "^0.4.0"
+    error-kid "^0.0.4"
+    mitt "^3.0.1"
+    valibot "1.0.0-beta.14"
+
 "@telegram-apps/bridge@^1.9.2":
   version "1.9.2"
   resolved "https://registry.yarnpkg.com/@telegram-apps/bridge/-/bridge-1.9.2.tgz#5dbff521fbe3160ff6134fbb53fd3a8306306eb2"
@@ -1022,7 +1036,7 @@
   resolved "https://registry.yarnpkg.com/@telegram-apps/toolkit/-/toolkit-1.1.1.tgz#939c30f07dab7c3d754765b60021210cb9669b84"
   integrity sha512-+vhKx6ngfvjyTE6Xagl3z1TPVbfx5s7xAkcYzCdHYUo6T60jLIqLgyZMcI1UPoIAMuMu1pHoO+p8QNCj/+tFmw==
 
-"@telegram-apps/toolkit@^2.1.2":
+"@telegram-apps/toolkit@^2.0.0", "@telegram-apps/toolkit@^2.1.2":
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/@telegram-apps/toolkit/-/toolkit-2.1.2.tgz#332ea0fc50468ec0b256256d9a337e596b029592"
   integrity sha512-iAPjn7RNVEm4o+LPJg1mYv7eDOnCatVEvep7JT74awTt3tn8pVpTYeUbDIFBuOF2BRSIzUgPUYQgVhQcDFTpUg==
@@ -1035,7 +1049,7 @@
     "@telegram-apps/toolkit" "^1.1.1"
     "@telegram-apps/types" "^1.2.1"
 
-"@telegram-apps/transformers@^2.2.3":
+"@telegram-apps/transformers@^2.2.0", "@telegram-apps/transformers@^2.2.3":
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/@telegram-apps/transformers/-/transformers-2.2.3.tgz#1b1785890620ca7a6a7adea114b4f35d12d0fe2b"
   integrity sha512-CFQqs7iXw6yuUMBzU1/W/EGW6RlrO0ZViJGFa0ButyHVxOnmM+d5vJmlAiqBFtnUutK9Q2GfbHZoGLW8qSs5YQ==
@@ -1312,7 +1326,7 @@ balanced-match@^1.0.0:
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.2.tgz#e83e3a7e3f300b34cb9d87f615fa0cbf357690ee"
   integrity sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==
 
-better-promises@^0.4.1:
+better-promises@^0.4.0, better-promises@^0.4.1:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/better-promises/-/better-promises-0.4.1.tgz#37d23067d918160fdc8b0a074cb39e5afe630f3d"
   integrity sha512-cDW7eMvhvCoWzSih5o/OxsAgTUfP05yGMq77xNZUTmcZoNU9vEeFZJ+yJJi4lnocvxFrVFKsG0Yxt7ZnuYJEig==
@@ -1599,6 +1613,11 @@ error-ex@^1.3.1:
   integrity sha512-7dFHNmqeFSEt2ZBsCriorKnn3Z2pj+fd9kmI6QoWw4//DL+icEBfc0U7qJCisqrTsKTjw4fNFy2pW9OqStD84g==
   dependencies:
     is-arrayish "^0.2.1"
+
+error-kid@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/error-kid/-/error-kid-0.0.4.tgz#8dc4769a4ff6ac0178a146472a8bcddd94319822"
+  integrity sha512-x+yQhY56SorLMnX6kOf+z3JCv2QBurcWEDcIjgxYtVr4fGeCfAtOdZOCyWttkHHDFPtL2PqnaRUmphbmALJd9w==
 
 error-kid@^0.0.7:
   version "0.0.7"
@@ -2740,6 +2759,13 @@ react-refresh@^0.17.0:
   version "0.17.0"
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.17.0.tgz#b7e579c3657f23d04eccbe4ad2e58a8ed51e7e53"
   integrity sha512-z6F7K9bV85EfseRCp2bzrpyQ0Gkw1uLoCel9XBVWPg/TjRj94SkJzUTGfOa4bs7iJvBWtQG0Wq7wnI0syw3EBQ==
+
+react-toastify@^11.0.5:
+  version "11.0.5"
+  resolved "https://registry.yarnpkg.com/react-toastify/-/react-toastify-11.0.5.tgz#ce4c42d10eeb433988ab2264d3e445c4e9d13313"
+  integrity sha512-EpqHBGvnSTtHYhCPLxML05NLY2ZX0JURbAdNYa6BUkk+amz4wbKBQvoKQAB0ardvSarUBuY4Q4s1sluAzZwkmA==
+  dependencies:
+    clsx "^2.1.1"
 
 react-transition-group@^4.4.5:
   version "4.4.5"

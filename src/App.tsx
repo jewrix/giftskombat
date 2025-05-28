@@ -9,9 +9,9 @@ import {animationCache} from "./utils/animationCache.ts";
 import {createTheme, ThemeProvider} from "@mui/material";
 
 import './Game.css';
+import {ToastContainer} from "react-toastify";
 
 preloadAll(['PlushPepe', 'ScaredCat', 'Cookie', 'Doll', 'JellyBunny', 'MadPumpkin', 'ToyBear', 'CrystalBall']);
-// preloadAll(["Doll"]);
 
 console.log({animationCache})
 const theme = createTheme();
@@ -19,6 +19,8 @@ const App: React.FC = () => {
     const [battleRoom, setBattleRoom] = useState<null | Room>(null);
     const [dragging, setDragging] = useState(false);
     const [orientation, setOrientation] = useState(screen.orientation.type);
+
+    // const launchParams = useLaunchParams();
 
     useEffect(() => {
         if (battleRoom) {
@@ -86,6 +88,7 @@ const App: React.FC = () => {
             <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd} sensors={sensors}>
                 <RoomProvider room={battleRoom}>
                     <Game dragging={dragging}/>
+                    <ToastContainer limit={2} />
                 </RoomProvider>
             </DndContext>
         </ThemeProvider>

@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {useClient} from '../context/ClientContext';
 import {Room} from 'colyseus.js';
+import {useLaunchParams} from "@telegram-apps/sdk-react";
 
 type Props = {
     onMatchFound: (room: Room<any>) => void;
@@ -15,6 +16,8 @@ const Lobby: React.FC<Props> = ({onMatchFound}) => {
     const reconnectionToken = localStorage.getItem('reconnectionToken');
 
     const [withReconnection, setWithReconnection] = useState(!!reconnectionToken);
+
+    const launchParams = useLaunchParams();
 
     const findMatch = async () => {
         setSearching(true);
@@ -31,7 +34,10 @@ const Lobby: React.FC<Props> = ({onMatchFound}) => {
             lobby.onMessage('match_found', async (msg: { battleRoomId: string }) => {
                 // отписываемся от лобби и переходим в боевую комнату
                 await lobby.leave();
-                const battleRoom = await client.joinById(msg.battleRoomId)
+                const battleRoom = await client.joinById(msg.battleRoomId, {
+                    name: launchParams.tgWebAppData.user.username,
+                    avatarUrl: launchParams.tgWebAppData.user.photoUrl,
+                })
                 onMatchFound(battleRoom);
             });
         } catch (e: any) {
