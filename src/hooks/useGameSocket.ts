@@ -73,7 +73,7 @@ export function useGameSocket() {
             dispatch(phaseChanged('BATTLE'));
             dispatch(closeShop());
 
-            console.log({msg})
+            console.log('boardSnapshot', {msg})
 
             dispatch(setEnemyBoard(msg.enemy))
             dispatch(setPlayerBoard(msg.self))

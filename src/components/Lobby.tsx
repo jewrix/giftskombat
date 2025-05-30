@@ -17,7 +17,7 @@ const Lobby: React.FC<Props> = ({onMatchFound}) => {
 
     const [withReconnection, setWithReconnection] = useState(!!reconnectionToken);
 
-    const launchParams = useLaunchParams();
+    // const launchParams = useLaunchParams();
 
     const findMatch = async () => {
         setSearching(true);
@@ -35,8 +35,8 @@ const Lobby: React.FC<Props> = ({onMatchFound}) => {
                 // отписываемся от лобби и переходим в боевую комнату
                 await lobby.leave();
                 const battleRoom = await client.joinById(msg.battleRoomId, {
-                    name: launchParams.tgWebAppData.user.username,
-                    avatarUrl: launchParams.tgWebAppData.user.photoUrl,
+                    // name: launchParams.tgWebAppData.user.username,
+                    // avatarUrl: launchParams.tgWebAppData.user.photoUrl,
                 })
                 onMatchFound(battleRoom);
             });
@@ -80,24 +80,43 @@ const Lobby: React.FC<Props> = ({onMatchFound}) => {
     }
 
 
+    const src = new URL(`/assets/Logo.png`, import.meta.url).href;
+    const findMatchSrc = new URL(`/assets/FindMatch.png`, import.meta.url).href;
+    const reconnectMatchSrc = new URL(`/assets/Reconnect.png`, import.meta.url).href;
+    const cancelQueueSrc = new URL(`/assets/Cancel.png`, import.meta.url).href;
+    const disconnectMatchSrc = new URL(`/assets/Disconnect.png`, import.meta.url).href;
+
+
+
+
     return (
         <div className="lobby">
-            <h1>Автобаттлер</h1>
-            {withReconnection && <>
-                <button onClick={reconnect}>Переподключиться</button>
-                <button onClick={disconnect}>Отключится</button>
-            </>}
+            {withReconnection && <div className='lobby_container'>
+                <button className='lobby_button' onClick={reconnect}><img src={reconnectMatchSrc} width={250} height={60}/></button>
+                <button className='lobby_button' onClick={disconnect}><img src={disconnectMatchSrc} width={250} height={60}/></button>
+            </div>}
 
+            <img src={src} style={{
+                position: 'absolute',
+                width: '250px',
+                height: '200px',
+                objectFit: 'cover',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)'
+            }}/>
 
-            {!withReconnection && <>
+            {!withReconnection && <div className='lobby_container'>
+                {error && <p className="lobby_error">{error}</p>}
                 {!searching ? (
-                    <button onClick={findMatch}>Найти матч</button>
+                    <button className='lobby_button' onClick={findMatch}>
+                        <img src={findMatchSrc} width={250}
+                             height={60}/></button>
                 ) : (
-                    <button onClick={cancelSearch}>Отменить поиск</button>
+                    <button className='lobby_button' onClick={cancelSearch}><img src={cancelQueueSrc} width={250} height={60}/></button>
                 )}
-            </>}
+            </div>}
 
-            {error && <p className="error">{error}</p>}
         </div>
     );
 };
