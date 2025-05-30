@@ -21,16 +21,14 @@ const PlayersList: React.FC = () => {
             .sort((a, b) => b.hp - a.hp);
     }, [players]);
 
-    console.log({entries, players})
-
     return (
         <div className="players-list">
             <ul>
                 {entries.map(({id, hp, name, avatarUrl}: PlayerEntry) => (
                     <li key={id} style={{fontWeight: id === room.sessionId ? 'bold' : 'normal'}}>
                         <Stack gap={1}>
-                            <img src={avatarUrl} alt={name} width={15} height={15}/>
-                            {id === room.sessionId ? 'Вы' : name}: {hp}
+                            {avatarUrl && <img src={avatarUrl} alt={name} width={15} height={15}/>}
+                            {id === room.sessionId ? 'Вы' : name}: {hp}❤️
                         </Stack>
                     </li>
                 ))}

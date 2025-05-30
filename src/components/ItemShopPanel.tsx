@@ -6,7 +6,6 @@ import {useRoom} from "../context/RoomContext.tsx";
 import {closeItemShop} from "../store/itemShopSlice.ts";
 
 const ItemShopPanel: React.FC = () => {
-
     const dispatch = useDispatch<AppDispatch>();
     const isVisible = useSelector((state: RootState) => state.itemShop.isOpen);
 
@@ -22,22 +21,19 @@ const ItemShopPanel: React.FC = () => {
         let result = ''
 
         if (item.attackBonus) {
-            result += `${item.attackBonus} к урону `
+            result += `${item.attackBonus} ⚔️`
         }
         if (item.hpBonus) {
-            result += `${item.hpBonus} к здоровью `
+            result += `${item.hpBonus} ❤️ `
         }
         if (item.speedBonus) {
-            result += `${item.speedBonus} к скорости `
+            result += `${item.speedBonus} speed `
         }
         if (item.rangeBonus) {
-            result += `${item.rangeBonus} к дальности `
-        }
-        if (item.costBonus) {
-            result += `${item.costBonus} к стоимости `
+            result += `${item.rangeBonus} 🏹 `
         }
         if (item.armorBonus) {
-            result += `${item.armorBonus} к броне `
+            result += `${item.armorBonus} armor `
         }
 
         return result
@@ -47,7 +43,7 @@ const ItemShopPanel: React.FC = () => {
         <>
             <div className="shop-container">
                 <div className={`shop-panel ${isVisible ? '' : 'hidden'}`}>
-                    <h2>Выбери предмет</h2>
+                    <h2>Choose item</h2>
                     <div className="shop-items">
                         {offers.map(unit => {
                             const src = new URL(`../assets/items/${unit.name}_Item.png`, import.meta.url).href;

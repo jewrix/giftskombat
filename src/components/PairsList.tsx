@@ -6,9 +6,6 @@ const PairsList: React.FC = () => {
     const pairs = useSelector((s: RootState) => s.game.pairs) ?? [];
     const pairResults = useSelector((s: RootState) => s.game.pairResults) ?? [];
 
-
-    console.log({pairResults})
-
     return (
         <div className="pairs-list">
             <ul>

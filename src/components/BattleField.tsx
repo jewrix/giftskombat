@@ -268,11 +268,11 @@ const BattleField: React.FC = () => {
                 if (
                     msg.side === 'self'
                 ) {
-                    toast('Вы победили!', {
+                    toast('You win!', {
                         type: 'success',
                     });
                 } else {
-                    toast('Вы проиграли!', {
+                    toast('You lose!', {
                         type: 'error',
                     });
                 }
@@ -283,12 +283,12 @@ const BattleField: React.FC = () => {
         return () => {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-expect-error
-            room.removeAllListeners('event');
-            app.ticker.stop();
-            app.ticker.destroy();
-            app.renderer.destroy();
-            app.stage.destroy({children: true});
-            gsap.globalTimeline.clear()
+            room?.removeAllListeners('event');
+            app?.ticker.stop();
+            app?.ticker.destroy();
+            app?.renderer.destroy();
+            app?.stage.destroy({children: true});
+            gsap.globalTimeline?.clear()
         };
     }, [room, dispatch]);
 

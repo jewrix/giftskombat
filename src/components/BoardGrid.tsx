@@ -40,6 +40,7 @@ const Cell: React.FC<CellProps> = ({row, col, unit}) => {
     const {attributes, listeners, setNodeRef: setDragRef, transform} = useDraggable({id: draggableId});
 
     const src = new URL(`../assets/${unit?.unitType}_Idle.gif`, import.meta.url).href;
+    const starSrc = new URL(`../assets/star.png`, import.meta.url).href;
 
     return (
         <div
@@ -55,11 +56,34 @@ const Cell: React.FC<CellProps> = ({row, col, unit}) => {
                 // transition,
             }}
         >
-            {unit && <img src={src} style={{
+            {unit && <div style={{
+                position: 'relative',
                 transform: CSS.Translate.toString(transform),
-                width: "100%",
-                height: '100%'
-            }}/>}
+            }}>
+                <img src={src} style={{
+                    width: "100%",
+                    height: '100%'
+                }}/>
+                <div style={{
+                    position: 'absolute',
+                    bottom: -10,
+                    left: '50%',
+                    zIndex: 1000,
+                    transform: 'translateX(-50%)',
+                    display: 'flex',
+                }}>
+                    {Array.from({length: unit.tier}, (_, i) =>
+                        <img
+                            key={i}
+                            style={{
+                                width: 15,
+                                height: 15
+                            }}
+                            src={starSrc}
+                            alt="tier star"
+                        />)}
+                </div>
+            </div>}
         </div>
     );
 };
@@ -77,8 +101,6 @@ const BoardGrid: React.FC = () => {
 
             const [fromType, rowA, colA, ...unitChunks] = String(active.id).split('-');
             const [toType, rowB, colB] = String(over.id).split('-');
-
-            console.log({over: active.id})
 
             // если закинули ски из bench на поле
             if (fromType === 'bench' && toType === 'cell') {
@@ -125,10 +147,9 @@ const BoardGrid: React.FC = () => {
             if (fromType === 'item' && toType === 'cell') {
                 const selectedUnit = units.find(u => u.positionX === Number(rowB) && u.positionY === Number(colB));
 
-                if(selectedUnit) {
+                if (selectedUnit) {
                     const itemId = [rowA, colA, ...unitChunks].join('-');
-                    console.log({selectedUnit, itemId})
-                    room.send('equip_item', {figureId: selectedUnit.id, itemId });
+                    room.send('equip_item', {figureId: selectedUnit.id, itemId});
                 }
             }
 

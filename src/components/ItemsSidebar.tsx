@@ -87,7 +87,7 @@ const ItemSidebar: React.FC = () => {
                         fontSize: '0.9rem',
                     }}
                 >
-                    Нет предметов
+                    No items
                 </Box>
             )}
         </Box>

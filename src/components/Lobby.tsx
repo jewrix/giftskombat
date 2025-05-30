@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {useClient} from '../context/ClientContext';
 import {Room} from 'colyseus.js';
-import {useLaunchParams} from "@telegram-apps/sdk-react";
+// import {useLaunchParams} from "@telegram-apps/sdk-react";
 
 type Props = {
     onMatchFound: (room: Room<any>) => void;
@@ -85,9 +85,6 @@ const Lobby: React.FC<Props> = ({onMatchFound}) => {
     const reconnectMatchSrc = new URL(`/assets/Reconnect.png`, import.meta.url).href;
     const cancelQueueSrc = new URL(`/assets/Cancel.png`, import.meta.url).href;
     const disconnectMatchSrc = new URL(`/assets/Disconnect.png`, import.meta.url).href;
-
-
-
 
     return (
         <div className="lobby">

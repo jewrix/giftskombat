@@ -29,6 +29,22 @@ const ShopPanel: React.FC = () => {
         }
     };
 
+    const getUnitStat = (item: UnitType) => {
+        let result = ''
+
+        if (item.baseAttackPower) {
+            result += `${item.baseAttackPower} ⚔️ `
+        }
+        if (item.baseHp) {
+            result += `${item.baseHp} ❤️\r\n`
+        }
+        if (item.baseAttackRange) {
+            result += item.baseAttackRange > 1 ? `🏹\r\n` : ''
+        }
+
+        return result
+    }
+
     return (
         <>
             <div className="shop-container">
@@ -39,22 +55,25 @@ const ShopPanel: React.FC = () => {
                     >
                         ×
                     </button>
-                    <h2>Магазин</h2>
+                    <h2>Shop</h2>
                     <div className="shop-items">
                         {offers.map(unit => {
-
                             const src = new URL(`../assets/${unit.unitType}_Idle.gif`, import.meta.url).href;
-
                             return (
                                 <div key={unit.id} className="shop-card" onClick={() => onBuy(unit)}>
                                     <img src={src} alt={unit.unitType}/>
-                                    <p>Цена: {unit.cost}</p>
+                                    <p>{unit.cost}🪙</p>
+                                    <p style={{
+                                        margin: '0'
+                                    }}>
+                                        {getUnitStat(unit)}
+                                    </p>
                                 </div>
                             )
                         })}
                     </div>
                     <button className="reroll-button" onClick={onReroll}>
-                        Реролл ({cost} 🪙)
+                        Reroll ({cost} 🪙)
                     </button>
                 </div>
             </div>
@@ -62,7 +81,7 @@ const ShopPanel: React.FC = () => {
                 className="open-button"
                 onClick={() => dispatch(openShop())}
             >
-                <img src={`${import.meta.env.BASE_URL}assets/StoreButton.png`}  alt=""
+                <img src={`${import.meta.env.BASE_URL}assets/StoreButton.png`} alt=""
                      style={{width: '100%', height: '100%', objectFit: 'contain'}}/>
             </button>
         </>

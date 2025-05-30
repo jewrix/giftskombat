@@ -27,8 +27,6 @@ const Game: React.FC<{ dragging: boolean }> = ({dragging}) => {
     // return () => room.removeAllListeners();
     // }, [room, dispatch]);
 
-    console.log({combatStarted})
-
     return (
         <div className="game-ui">
 

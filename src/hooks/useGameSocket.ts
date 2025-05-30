@@ -8,7 +8,7 @@ import {
     setEnemyBoard,
     setPairs,
     setPlayerBoard,
-    setPlayers
+    setPlayers, setRound
 } from "../store/gameSlice.ts";
 import {PlayerState} from "../store/playerSlice.ts";
 import {closeShop, openShop, setOffers} from "../store/shopSlice.ts";
@@ -42,10 +42,9 @@ export function useGameSocket() {
 
             const players = state.players.toJSON();
 
-            console.log({players})
-
             // @ts-ignore
             dispatch(setPlayers(players))
+            dispatch(setRound(state.round));
 
             // Оппоненты: все другие игроки
             const opponents: Array<PlayerState> = [];
