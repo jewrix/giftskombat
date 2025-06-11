@@ -1,10 +1,10 @@
 import React from 'react';
 import {useSelector} from 'react-redux';
-import {useDndMonitor, useDraggable, useDroppable} from '@dnd-kit/core';
+import {useDraggable, useDroppable} from '@dnd-kit/core';
 import {RootState} from '../store/store';
 import {UnitType} from "../store/playerSlice.ts";
-import {useRoom} from "../context/RoomContext.tsx";
 import {CSS} from '@dnd-kit/utilities';
+import {useBoardDnd} from "../hooks/useBoardDnd.ts";
 
 interface CellProps {
     row: number;
@@ -89,77 +89,10 @@ const Cell: React.FC<CellProps> = ({row, col, unit}) => {
 };
 
 const BoardGrid: React.FC = () => {
-    const room = useRoom();
     const boardMap = useSelector((s: RootState) => s.player.board);
     const units = Object.values(boardMap);
 
-    // TODO: Вынести из компонента
-    // ② Ловим окончание любого DnD и, если drop на ячейку поля, шлём на сервер
-    useDndMonitor({
-        onDragEnd({active, over}) {
-            if (!over) return;
-
-            const [fromType, rowA, colA, ...unitChunks] = String(active.id).split('-');
-            const [toType, rowB, colB] = String(over.id).split('-');
-
-            // если закинули ски из bench на поле
-            if (fromType === 'bench' && toType === 'cell') {
-                const figureId = String(active.id).replace('bench-', '');
-
-                room.send('placeFigure', {
-                    figureId,
-                    position: {
-                        x: Number(rowB),
-                        y: Number(colB),
-                    }
-                });
-            }
-
-            // если перекладываем с клетки на клетку
-            const moveInSameCell = rowA !== rowB || colA !== colB
-
-            if (fromType === 'cell' && toType === 'cell' && active.id !== over.id && moveInSameCell) {
-                const figureId = unitChunks.join('-');
-
-                room.send('moveUnit', {
-                    figureId,
-                    position: {
-                        x: Number(rowB),
-                        y: Number(colB),
-                    }
-                });
-            }
-
-            // если возвращаем на bench (over.id === 'bench-drop')
-            if (fromType === 'cell' && over.id === 'bench-drop') {
-                const figureId = unitChunks.join('-');
-
-                room.send('move_unit_to_bench', {
-                    figureId,
-                });
-            }
-
-            if (fromType === 'cell' && over.id === 'sell-slot') {
-                const figureId = unitChunks.join('-');
-                room.send('sellFigure', {figureId});
-            }
-
-            if (fromType === 'item' && toType === 'cell') {
-                const selectedUnit = units.find(u => u.positionX === Number(rowB) && u.positionY === Number(colB));
-
-                if (selectedUnit) {
-                    const itemId = [rowA, colA, ...unitChunks].join('-');
-                    room.send('equip_item', {figureId: selectedUnit.id, itemId});
-                }
-            }
-
-            if (fromType === 'bench' && over.id === 'sell-slot') {
-                const figureId = String(active.id).replace('bench-', '');
-                room.send('sellFigure', {figureId});
-            }
-
-        },
-    });
+    useBoardDnd(units);
 
     return (
         <div style={{display: 'flex', gap: '8px', justifyContent: 'center'}}>
