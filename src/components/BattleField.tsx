@@ -60,6 +60,7 @@ const BattleField: React.FC = () => {
 
             const containers: Record<string, Container> = {};
             const healthBars: Record<string, Graphics> = {};
+            const manaBars: Record<string, Graphics> = {};
             const currentHp: Record<string, number> = {};
             const maxHp: Record<string, number> = {};
 
@@ -100,20 +101,42 @@ const BattleField: React.FC = () => {
                     .drawRect(0, 0, CELL_SIZE, 6)
                     .endFill();
 
+                const manaBg = new Graphics()
+                    .beginFill(0x000000)
+                    .drawRect(0, 0, CELL_SIZE, 6)
+                    .endFill();
+
+                const manaFg = new Graphics()
+                    .beginFill(0x0000ff)
+                    .drawRect(0, 0, 0, 6)
+                    .endFill();
+
+                const healthY = -CELL_SIZE / 2 - 8;
+
                 barBg.x = -CELL_SIZE / 2;
-                barBg.y = -CELL_SIZE / 2 - 8;
+                barBg.y = healthY;
                 barFg.x = -CELL_SIZE / 2;
-                barFg.y = -CELL_SIZE / 2 - 8;
+                barFg.y = healthY;
+
+                const manaY = healthY + 7;
+
+                manaBg.x = -CELL_SIZE / 2;
+                manaBg.y = manaY;
+                manaFg.x = -CELL_SIZE / 2;
+                manaFg.y = manaY;
+
                 healthBars[u.id] = barFg;
+                manaBars[u.id] = manaFg;
 
                 container.addChild(anim);
                 container.addChild(barBg);
                 container.addChild(barFg);
+                container.addChild(manaBg);
+                container.addChild(manaFg);
 
                 app.stage.addChild(container);
                 containers[u.id] = container;
                 sprites[u.id] = anim;
-                healthBars[u.id] = barFg;
                 idToType[u.id] = u.unitType;
             }
 
@@ -174,6 +197,7 @@ const BattleField: React.FC = () => {
 
                         const ratio = currentHp[msg.target] / maxHp[msg.target];
                         const bar = healthBars[msg.target];
+                        const manaBar = manaBars[msg.attacker];
 
                         const targetContainer = containers[msg.target];
                         const targetSprite = sprites[msg.target];
@@ -191,6 +215,13 @@ const BattleField: React.FC = () => {
                         } else {
                             targetContainer.alpha = 0.4;
                             targetSprite.textures = targetSets.idle as unknown as AnimatedSpriteFrames;
+                        }
+
+                        if (manaBar && msg.manaRatio !== undefined) {
+                            manaBar.clear();
+                            if (msg.manaRatio > 0) {
+                                manaBar.drawRect(0, 0, CELL_SIZE * msg.manaRatio, 6).endFill();
+                            }
                         }
 
                         attackerSprite.gotoAndPlay(0);
