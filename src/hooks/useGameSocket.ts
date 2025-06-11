@@ -20,9 +20,8 @@ export function useGameSocket() {
 
     const room = useRoom()
 
-    localStorage.setItem('reconnectionToken', room.reconnectionToken);
-
     useEffect(() => {
+        localStorage.setItem('reconnectionToken', room.reconnectionToken);
         // Синхронизируем при каждом изменении состояния комнаты
         room.onStateChange((state) => {
             // Текущий игрок
@@ -128,5 +127,9 @@ export function useGameSocket() {
                 opponentRemaining: msg.opponentRemaining,
             }));
         });
-    });
+
+        return () => {
+            room.removeAllListeners();
+        };
+    }, [room]);
 }
