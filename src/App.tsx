@@ -18,7 +18,13 @@ const theme = createTheme();
 const App: React.FC = () => {
     const [battleRoom, setBattleRoom] = useState<null | Room>(null);
     const [dragging, setDragging] = useState(false);
-    const [orientation, setOrientation] = useState(screen.orientation.type);
+    const [orientation, setOrientation] = useState(
+        screen.orientation
+            ? screen.orientation.type
+            : window.innerWidth > window.innerHeight
+                ? 'landscape-primary'
+                : 'portrait-primary'
+    );
 
     // const launchParams = useLaunchParams();
 
@@ -30,15 +36,26 @@ const App: React.FC = () => {
         }
     }, [battleRoom])
 
-    useEffect(() => {
-        screen.orientation.addEventListener('change', () => {
-            setOrientation(screen.orientation.type);
-        });
+    const handleOrientationChange = () => {
+        setOrientation(
+            screen.orientation
+                ? screen.orientation.type
+                : window.innerWidth > window.innerHeight
+                    ? 'landscape-primary'
+                    : 'portrait-primary'
+        );
+    };
 
+    useEffect(() => {
+        if (screen.orientation) {
+            screen.orientation.addEventListener('change', handleOrientationChange);
+            return () => {
+                screen.orientation.removeEventListener('change', handleOrientationChange);
+            };
+        }
+        window.addEventListener('resize', handleOrientationChange);
         return () => {
-            screen.orientation.removeEventListener('change', () => {
-                setOrientation(screen.orientation.type);
-            });
+            window.removeEventListener('resize', handleOrientationChange);
         };
     }, []);
 
